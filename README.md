@@ -1,55 +1,129 @@
-# Social Media Content Scheduler with AI Content
+# Social Media Scheduler with AI Content
 
-A full-stack application that enables users to schedule, manage, and analyze social media content while leveraging AI-powered content suggestions to enhance engagement. The project integrates OpenAI's ChatGPT API to generate content ideas, hashtags, and headlines based on user inputs.
+A powerful social media management platform that allows scheduling and managing content across various platforms with AI-powered content generation capabilities.
 
-## Key Features
+## 🔗 API Base URL
 
-- **AI Content Suggestions**: Integrated ChatGPT API to provide content suggestions, engaging headlines, and relevant hashtags for social media posts.
-- **Content Scheduling**: Automated post scheduling with Redis and Bull, ensuring timely delivery across multiple platforms.
-- **Analytics Dashboard**: Visual representation of post performance, including views, clicks, and engagement metrics.
-- **User Authentication**: Secure user authentication and profile management using JWT.
-- **Real-Time Notifications**: Alerts for scheduled posts, post publication, and post performance updates.
+**Base URL**: `http://localhost:3000`
 
-## Technologies Used
+## ✨ Key Features
 
-### Backend
-- NestJS
-- MongoDB + Mongoose
-- Redis + Bull for queue management
-- OpenAI ChatGPT API
-- JWT Authentication
+- **🔐 User Authentication**
+  - Register: `POST /auth/register`
+  - Login: `POST /auth/login`
+  - Profile: `GET /auth/profile`
 
-## Getting Started
+- **👤 User Management**
+  - Get all users: `GET /users`
+  - Get user by ID: `GET /users/:id`
+  - Update user: `PATCH /users/:id`
+  - Delete user: `DELETE /users/:id`
+
+- **📝 Post Management**
+  - Create post: `POST /posts`
+  - Get all posts: `GET /posts`
+  - Get post by ID: `GET /posts/:id`
+  - Update post: `PATCH /posts/:id`
+  - Delete post: `DELETE /posts/:id`
+
+- **🤖 AI-Powered Content Generation**
+  - Generate content ideas: `POST /ai/content-ideas`
+  - Generate hashtags: `POST /ai/hashtags`
+  - Improve content: `POST /ai/improve-content`
+  - Generate image captions: `POST /ai/generate-caption`
+
+- **🔔 Notifications System**
+  - Get all notifications: `GET /notifications`
+  - Get unread notifications: `GET /notifications/unread`
+  - Mark notification as read: `POST /notifications/:id/read`
+  - Mark all as read: `POST /notifications/read-all`
+  - Delete notification: `DELETE /notifications/:id`
+
+## 🛠️ Tech Stack
+
+- **Backend**: NestJS with TypeScript
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT, Passport
+- **Queue System**: BullMQ with Redis
+- **AI Integration**: OpenAI API
+
+## 📋 API Documentation
+
+For detailed API documentation including request/response formats, see [backend README](backend/README.md).
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js
+
+- Node.js (v16+)
 - MongoDB
 - Redis
+- OpenAI API key
 
-### Installation
+### Setup
 
 1. Clone the repository
-2. Install dependencies
-   ```bash
-   # Backend
-   cd backend
-   pnpm install
-
-   # Frontend (to be added)
-   ```
-
-3. Configure environment variables (create a .env file in the backend directory)
-4. Start the development server
-   ```bash
-   # Backend
-   cd backend
-   pnpm run start:dev
-   ```
-
-## Project Structure
-
+```bash
+git clone https://github.com/Muhammad-AIUB/Social-Media-Content-Scheduler-with-AI-Content_backend.git
+cd Social-Media-Content-Scheduler-with-AI-Content_backend
 ```
-social-media/
-├── backend/         # NestJS backend application
-└── frontend/        # Frontend application (to be added)
-``` 
+
+2. Install dependencies
+```bash
+cd backend
+pnpm install
+```
+
+3. Set up environment variables in `.env` file:
+```
+NODE_ENV=development
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/social-media-scheduler
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRATION=7d
+OPENAI_API_KEY=your_openai_api_key
+REDIS_HOST=localhost
+REDIS_PORT=6379
+FRONTEND_URL=http://localhost:5173
+```
+
+4. Start the server
+```bash
+pnpm run start:dev
+```
+
+## 📝 Example API Requests
+
+### Register a User
+```bash
+curl -X POST http://localhost:3000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Test User", "email": "test@example.com", "password": "password123"}'
+```
+
+### Login
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "password123"}'
+```
+
+### Create a Post
+```bash
+curl -X POST http://localhost:3000/posts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"content": "Test post", "platform": "twitter", "scheduledDate": "2023-12-31T12:00:00Z"}'
+```
+
+### Generate Content Ideas
+```bash
+curl -X POST http://localhost:3000/ai/content-ideas \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"topic": "productivity", "platform": "linkedin", "count": 3}'
+```
+
+## 📄 License
+
+[MIT](LICENSE) 
