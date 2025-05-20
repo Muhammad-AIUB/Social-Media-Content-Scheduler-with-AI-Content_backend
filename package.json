@@ -1,0 +1,16 @@
+{
+  "name": "social-media-content-scheduler",
+  "version": "1.0.0",
+  "description": "A full-stack application that enables users to schedule, manage, and analyze social media content with AI content suggestions",
+  "scripts": {
+    "start:backend": "cd backend && pnpm run start:dev",
+    "install:backend": "cd backend && pnpm install"
+  },
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+} 

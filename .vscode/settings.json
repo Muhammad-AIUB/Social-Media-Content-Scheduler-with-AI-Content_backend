@@ -1,0 +1,16 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "typescript"],
+  "eslint.options": {
+    "overrideConfig": {
+      "rules": {
+        "eol-last": "off",
+        "no-trailing-spaces": "off"
+      }
+    }
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": false
+} 
