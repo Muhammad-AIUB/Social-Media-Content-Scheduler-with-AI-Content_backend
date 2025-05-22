@@ -1,16 +1,40 @@
 {
   "name": "social-media-content-scheduler",
   "version": "1.0.0",
-  "description": "A full-stack application that enables users to schedule, manage, and analyze social media content with AI content suggestions",
-  "scripts": {
-    "start:backend": "cd backend && pnpm run start:dev",
-    "install:backend": "cd backend && pnpm install"
-  },
-  "author": "",
-  "license": "MIT",
+  "description": "A full-stack application for scheduling and managing social media content with AI-powered content generation",
   "private": true,
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "start:backend": "cd backend && npm run start:dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build:all": "npm run build:backend && npm run build:frontend",
+    "test:backend": "cd backend && npm run test",
+    "test:frontend": "cd frontend && npm run test",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:all": "npm run lint:backend && npm run lint:frontend"
+  },
+  "keywords": [
+    "social-media",
+    "scheduler",
+    "ai",
+    "content-generation",
+    "nestjs",
+    "react",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
 } 

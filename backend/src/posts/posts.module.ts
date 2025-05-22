@@ -5,7 +5,7 @@ import { Post, PostSchema } from './schemas/post.schema';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { PostsProcessor } from './posts.processor';
-import { OpenAiModule } from '../openai/openai.module';
+import { AiModule } from '../ai/ai.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { OpenAiModule } from '../openai/openai.module';
     BullModule.registerQueue({
       name: 'posts',
     }),
-    OpenAiModule,
+    AiModule,
   ],
   controllers: [PostsController],
   providers: [PostsService, PostsProcessor],

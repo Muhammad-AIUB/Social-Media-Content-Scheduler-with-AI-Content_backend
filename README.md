@@ -1,129 +1,205 @@
-# Social Media Scheduler with AI Content
+# Social Media Content Scheduler
 
-A powerful social media management platform that allows scheduling and managing content across various platforms with AI-powered content generation capabilities.
+A full-stack application for scheduling and managing social media content with AI-powered content generation.
 
-## 🔗 API Base URL
+## Features
 
-**Base URL**: `http://localhost:3000`
+- 🔐 **User Authentication** - JWT-based authentication with Passport.js
+- 📝 **Content Management** - Create, edit, and manage social media posts
+- ⏰ **Post Scheduling** - Schedule posts for future publication
+- 🤖 **AI Content Generation** - Generate and improve content using OpenAI
+- 📊 **Analytics** - Track post performance and engagement
+- 🎯 **Multi-Platform Support** - Support for Twitter, Instagram, LinkedIn, and Facebook
+- 🔄 **Queue Management** - Background job processing with Bull/Redis
 
-## ✨ Key Features
+## Tech Stack
 
-- **🔐 User Authentication**
-  - Register: `POST /auth/register`
-  - Login: `POST /auth/login`
-  - Profile: `GET /auth/profile`
+### Backend
+- **NestJS** - Progressive Node.js framework
+- **MongoDB** - NoSQL database with Mongoose ODM
+- **Redis** - In-memory data store for queue management
+- **Bull** - Queue management for background jobs
+- **OpenAI API** - AI-powered content generation
+- **Passport.js** - Authentication middleware
+- **JWT** - JSON Web Tokens for secure authentication
 
-- **👤 User Management**
-  - Get all users: `GET /users`
-  - Get user by ID: `GET /users/:id`
-  - Update user: `PATCH /users/:id`
-  - Delete user: `DELETE /users/:id`
+### Frontend
+- **React** - UI library
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Fast build tool
+- **Tailwind CSS** - Utility-first CSS framework
 
-- **📝 Post Management**
-  - Create post: `POST /posts`
-  - Get all posts: `GET /posts`
-  - Get post by ID: `GET /posts/:id`
-  - Update post: `PATCH /posts/:id`
-  - Delete post: `DELETE /posts/:id`
+## Project Structure
 
-- **🤖 AI-Powered Content Generation**
-  - Generate content ideas: `POST /ai/content-ideas`
-  - Generate hashtags: `POST /ai/hashtags`
-  - Improve content: `POST /ai/improve-content`
-  - Generate image captions: `POST /ai/generate-caption`
+```
+social-media/
+├── backend/                 # NestJS backend application
+│   ├── src/
+│   │   ├── auth/           # Authentication module
+│   │   ├── users/          # User management
+│   │   ├── posts/          # Post management
+│   │   ├── scheduler/      # Post scheduling
+│   │   ├── ai/             # AI content generation
+│   │   ├── common/         # Shared utilities
+│   │   └── main.ts         # Application entry point
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/               # React frontend application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/          # Page components
+│   │   ├── hooks/          # Custom React hooks
+│   │   ├── services/       # API services
+│   │   └── types/          # TypeScript types
+│   ├── package.json
+│   └── vite.config.ts
+├── .env                    # Environment variables
+└── README.md
+```
 
-- **🔔 Notifications System**
-  - Get all notifications: `GET /notifications`
-  - Get unread notifications: `GET /notifications/unread`
-  - Mark notification as read: `POST /notifications/:id/read`
-  - Mark all as read: `POST /notifications/read-all`
-  - Delete notification: `DELETE /notifications/:id`
+## Prerequisites
 
-## 🛠️ Tech Stack
-
-- **Backend**: NestJS with TypeScript
-- **Database**: MongoDB with Mongoose
-- **Authentication**: JWT, Passport
-- **Queue System**: BullMQ with Redis
-- **AI Integration**: OpenAI API
-
-## 📋 API Documentation
-
-For detailed API documentation including request/response formats, see [backend README](backend/README.md).
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (v16+)
-- MongoDB
-- Redis
+- Node.js (v18 or higher)
+- MongoDB (v5 or higher)
+- Redis (v6 or higher)
 - OpenAI API key
 
-### Setup
+## Installation
 
-1. Clone the repository
-```bash
-git clone https://github.com/Muhammad-AIUB/Social-Media-Content-Scheduler-with-AI-Content_backend.git
-cd Social-Media-Content-Scheduler-with-AI-Content_backend
-```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd social-media
+   ```
 
-2. Install dependencies
+2. **Install dependencies**
+   ```bash
+   # Install backend dependencies
+   cd backend
+   npm install
+   
+   # Install frontend dependencies
+   cd ../frontend
+   npm install
+   ```
+
+3. **Environment Setup**
+   
+   Copy the `.env.example` to `.env` and configure your environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Update the `.env` file with your configuration:
+   ```env
+   # Application
+   PORT=3000
+   FRONTEND_URL=http://localhost:5173
+   
+   # JWT
+   JWT_SECRET=your-super-secret-jwt-key
+   JWT_EXPIRATION=7d
+   
+   # Database
+   MONGODB_URI=mongodb://localhost:27017/social-media
+   
+   # Redis
+   REDIS_HOST=localhost
+   REDIS_PORT=6379
+   
+   # OpenAI
+   OPENAI_API_KEY=your-openai-api-key
+   ```
+
+4. **Start the services**
+   
+   Make sure MongoDB and Redis are running on your system.
+   
+   **Start the backend:**
+   ```bash
+   cd backend
+   npm run start:dev
+   ```
+   
+   **Start the frontend:**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+## API Endpoints
+
+### Authentication
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Login user
+- `GET /auth/profile` - Get user profile
+
+### Posts
+- `GET /posts` - Get all posts for authenticated user
+- `POST /posts` - Create a new post
+- `GET /posts/:id` - Get a specific post
+- `PUT /posts/:id` - Update a post
+- `DELETE /posts/:id` - Delete a post
+
+### Scheduler
+- `POST /scheduler/schedule` - Schedule a post
+- `DELETE /scheduler/cancel/:postId` - Cancel a scheduled post
+
+### AI Content Generation
+- `POST /ai/generate` - Generate content using AI
+- `POST /ai/improve` - Improve existing content
+
+## Usage
+
+1. **Register/Login** - Create an account or login to access the dashboard
+2. **Create Posts** - Write your social media content
+3. **Schedule Posts** - Set future publication dates
+4. **AI Assistance** - Use AI to generate or improve content
+5. **Monitor** - Track your scheduled posts and analytics
+
+## Development
+
+### Backend Development
 ```bash
 cd backend
-pnpm install
+npm run start:dev    # Start in development mode
+npm run build        # Build for production
+npm run test         # Run tests
+npm run lint         # Run linter
 ```
 
-3. Set up environment variables in `.env` file:
-```
-NODE_ENV=development
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/social-media-scheduler
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRATION=7d
-OPENAI_API_KEY=your_openai_api_key
-REDIS_HOST=localhost
-REDIS_PORT=6379
-FRONTEND_URL=http://localhost:5173
-```
-
-4. Start the server
+### Frontend Development
 ```bash
-pnpm run start:dev
+cd frontend
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run linter
 ```
 
-## 📝 Example API Requests
+## Deployment
 
-### Register a User
-```bash
-curl -X POST http://localhost:3000/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Test User", "email": "test@example.com", "password": "password123"}'
-```
+### Backend Deployment
+1. Build the application: `npm run build`
+2. Set production environment variables
+3. Start the application: `npm run start:prod`
 
-### Login
-```bash
-curl -X POST http://localhost:3000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "test@example.com", "password": "password123"}'
-```
+### Frontend Deployment
+1. Build the application: `npm run build`
+2. Serve the `dist` folder using a web server
 
-### Create a Post
-```bash
-curl -X POST http://localhost:3000/posts \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"content": "Test post", "platform": "twitter", "scheduledDate": "2023-12-31T12:00:00Z"}'
-```
+## Contributing
 
-### Generate Content Ideas
-```bash
-curl -X POST http://localhost:3000/ai/content-ideas \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"topic": "productivity", "platform": "linkedin", "count": 3}'
-```
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -am 'Add feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
 
-## 📄 License
+## License
 
-[MIT](LICENSE) 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the development team. 

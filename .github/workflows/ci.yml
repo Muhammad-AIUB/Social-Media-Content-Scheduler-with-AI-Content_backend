@@ -1,0 +1,93 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
+        
+    - name: Install dependencies
+      run: cd backend && pnpm install --frozen-lockfile
+      
+    - name: Lint
+      run: cd backend && pnpm run lint
+      
+    - name: Build
+      run: cd backend && pnpm run build
+      
+    - name: Test
+      run: cd backend && pnpm run test
+      
+    - name: E2E Tests
+      run: cd backend && pnpm run test:e2e
+      
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
+        
+    - name: Install dependencies
+      run: cd backend && pnpm install --frozen-lockfile
+      
+    - name: Build
+      run: cd backend && pnpm run build
+      
+    - name: Package application
+      run: |
+        cd backend
+        mkdir -p dist/package
+        cp -r dist package.json pnpm-lock.yaml .env.example dist/package/
+        cd dist/package
+        pnpm install --prod --frozen-lockfile
+        cd ..
+        tar -czf app.tar.gz package
+      
+    # Example deployment step (customize for your platform)
+    - name: Deploy to production
+      if: ${{ false }} # Disabled until actual deployment is configured
+      run: echo "Deployment script would go here" 

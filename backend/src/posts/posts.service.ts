@@ -4,7 +4,7 @@ import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bullmq';
+import { Queue } from 'bull';
 import { Post, PostDocument, PostStatus } from './schemas/post.schema';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -82,7 +82,11 @@ export class PostsService {
       
       // Remove old job and add new one
       const jobId = `post-${id}`;
-      await this.postsQueue.remove(jobId);
+      const jobs = await this.postsQueue.getJobs(['delayed', 'waiting']);
+      const existingJob = jobs.find(job => job.id === jobId);
+      if (existingJob) {
+        await existingJob.remove();
+      }
       await this.schedulePost(id, scheduledDate);
     }
     
@@ -108,7 +112,11 @@ export class PostsService {
     // Remove job from queue if it was scheduled
     if (post.status === PostStatus.SCHEDULED) {
       const jobId = `post-${id}`;
-      await this.postsQueue.remove(jobId);
+      const jobs = await this.postsQueue.getJobs(['delayed', 'waiting']);
+      const existingJob = jobs.find(job => job.id === jobId);
+      if (existingJob) {
+        await existingJob.remove();
+      }
     }
     
     return post;
@@ -148,6 +156,25 @@ export class PostsService {
     post.status = PostStatus.PUBLISHED;
     post.publishedDate = new Date();
     
+    return post.save();
+  }
+
+  async publishScheduledPost(postId: string): Promise<Post | null> {
+    const post = await this.postModel.findById(postId).exec();
+    
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${postId} not found`);
+    }
+    
+    if (post.status !== PostStatus.SCHEDULED) {
+      this.logger.warn(`Attempted to publish non-scheduled post: ${postId}`);
+      return post;
+    }
+    
+    post.status = PostStatus.PUBLISHED;
+    post.publishedDate = new Date();
+    
+    this.logger.log(`Published scheduled post: ${postId}`);
     return post.save();
   }
 
